@@ -1,0 +1,119 @@
+﻿@page
+@model Otthonbazar.Pages.Advertisements.CreateModel
+
+@{
+    ViewData["Title"] = "Hirdetés feladása";
+}
+
+<h2>Hirdetés feladása</h2>
+
+<div class="container">
+    <form method="post">
+        <div class="row">
+            <section class="col-lg-7">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="row">
+                    <div class="form-group col-md-3">
+                        <label asp-for="Advertisement.CityId" class="control-label pull-right"></label>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <select asp-for="Advertisement.CityId" class="form-control" asp-items="ViewBag.CityId"></select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-3">
+                        <label asp-for="Advertisement.Address" class="col-lg-3 control-label pull-right"></label>
+                    </div>
+                    <div class="col-lg-6">
+                        <input asp-for="Advertisement.Address" class="form-control" />
+                        <span asp-validation-for="Advertisement.Address" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-3">
+                        <label asp-for="Advertisement.AdvertisementType" class="col-lg-3 control-label pull-right"></label>
+                    </div>
+                    <div class="col-lg-4">
+                        <select asp-for="Advertisement.AdvertisementType" asp-items="Html.GetEnumSelectList<AdvertisementType>()" class="form-control"></select>
+                        <span asp-validation-for="Advertisement.AdvertisementType" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-3">
+                        <label asp-for="Advertisement.Price" class="col-lg-3 control-label pull-right"></label>
+                    </div>
+                    <div class="input-group col-lg-4">
+                        <input asp-for="Advertisement.Price" class="form-control" />
+                        <span class="input-group-addon">M Ft</span>
+                        <span asp-validation-for="Advertisement.Price" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-3">
+                        <label asp-for="Advertisement.Size" class="col-lg-3 control-label pull-right"></label>
+                    </div>
+                    <div class="input-group col-lg-4">
+                        <input asp-for="Advertisement.Size" class="form-control" />
+                        <span class="input-group-addon">m<sup>2</sup></span>
+                        <span asp-validation-for="Advertisement.Size" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-3">
+                        <label asp-for="Advertisement.Room" class="col-lg-3 control-label pull-right"></label>
+                    </div>
+                    <div class="input-group col-lg-4">
+                        <input asp-for="Advertisement.Room" class="form-control" />
+                        <span class="input-group-addon">szoba</span>
+                        <span asp-validation-for="Advertisement.Room" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-3">
+                        <label asp-for="Advertisement.HalfRoom" class="col-lg-3 control-label pull-right"></label>
+                    </div>
+                    <div class="input-group col-lg-4">
+                        <input asp-for="Advertisement.HalfRoom" class="form-control" />
+                        <span class="input-group-addon">fél szoba</span>
+                        <span asp-validation-for="Advertisement.HalfRoom" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-3">
+                        <label asp-for="Advertisement.BuildDate" class="col-lg-3 control-label pull-right"></label>
+                    </div>
+                    <div class="col-lg-4">
+                        <input asp-for="Advertisement.BuildDate" class="form-control" />
+                        <span asp-validation-for="Advertisement.BuildDate" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Hirdetés feladása" class="btn btn-default" />
+                </div>
+            </section>
+            <section class="col-lg-5">
+                <label asp-for="Advertisement.Description" class="control-label"></label>
+                <div class="form-group">
+                    <textarea asp-for="Advertisement.Description" class="form-control" rows="6"></textarea>
+                    <span asp-validation-for="Advertisement.Description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Advertisement.ImageUrl" class="control-label"></label>
+                </div>
+                <div class="form-group form-inline">
+                    <input asp-for="Advertisement.ImageUrl" class="form-control" readonly />
+                    <button class="pull-right">Browse...</button>
+                    <span asp-validation-for="Advertisement.ImageUrl" class="text-danger"></span>
+                </div>
+            </section>
+        </div>
+    </form>
+</div>
+
+<div>
+    <a asp-page="Index">Vissza a listához</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
