@@ -13,15 +13,23 @@
             <section class="col-lg-7">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="row">
-                    <div class="form-group col-md-3">
-                        <label asp-for="Advertisement.CityId" class="control-label pull-right"></label>
+                    <div class="form-group col-lg-3">
+                        <label asp-for="Advertisement.City.Zip" class="control-label pull-right"></label>
                     </div>
-                    <div class="form-group col-md-4">
-                        <select asp-for="Advertisement.CityId" class="form-control" asp-items="ViewBag.CityId"></select>
+                    <div class="form-group col-lg-2">
+                        <input id="City_Zip" asp-for="Advertisement.City.Zip" class="form-control" />
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <input id="City_Name" asp-for="Advertisement.City.Name" class="form-control" readonly>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="form-group col-md-3">
+                    <div class="col-lg-offset-3 col-lg-6">
+                        <span asp-validation-for="Advertisement.City.Zip" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-3">
                         <label asp-for="Advertisement.Address" class="col-lg-3 control-label pull-right"></label>
                     </div>
                     <div class="col-lg-6">
@@ -39,7 +47,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-lg-3">
                         <label asp-for="Advertisement.Price" class="col-lg-3 control-label pull-right"></label>
                     </div>
                     <div class="input-group col-lg-4">
@@ -49,7 +57,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-lg-3">
                         <label asp-for="Advertisement.Size" class="col-lg-3 control-label pull-right"></label>
                     </div>
                     <div class="input-group col-lg-4">
@@ -59,7 +67,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-lg-3">
                         <label asp-for="Advertisement.Room" class="col-lg-3 control-label pull-right"></label>
                     </div>
                     <div class="input-group col-lg-4">
@@ -69,7 +77,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-lg-3">
                         <label asp-for="Advertisement.HalfRoom" class="col-lg-3 control-label pull-right"></label>
                     </div>
                     <div class="input-group col-lg-4">
@@ -79,7 +87,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-lg-3">
                         <label asp-for="Advertisement.BuildDate" class="col-lg-3 control-label pull-right"></label>
                     </div>
                     <div class="col-lg-4">
@@ -116,4 +124,18 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        $(document).ready(function () {
+            $("#City_Zip").on("blur", function (event, b) {
+                // Ha nincs megadva irányítószám, akkor nem hívjuk meg az ajaxot.
+                if ($("#City_Zip").val() === "")
+                    return;
+                $.get("/Advertisements/Create?handler=Zip&zip=" + event.currentTarget.value).then(function
+                    (data) {
+                    $("#City_Name").val(data.name);
+                });
+            })
+        });
+    </script>
 }
