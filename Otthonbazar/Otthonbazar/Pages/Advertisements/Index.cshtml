@@ -74,10 +74,9 @@
             <h2>Hirdetések</h2>
             @foreach (var item in Model.Advertisement)
             {
-                var imgSrc = string.IsNullOrWhiteSpace(item.ImageUrl) ? "https://via.placeholder.com/340x255" : Url.Content("images/" + item.ImageUrl);
                 <article class="col-lg-6" style="width:340px">
                     <a asp-page="Details" asp-route-id="@item.Id">
-                        <img class="img-responsive" src="@imgSrc" />
+                        <img class="img-responsive" src="@Url.Content("images/" + item.ImageUrl)" onerror="this.onerror=null;this.src='https://via.placeholder.com/340x255';" />
                     </a>
                     <h4>
                         <span>@item.Price MFt</span>

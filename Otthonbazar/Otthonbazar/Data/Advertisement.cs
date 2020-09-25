@@ -22,7 +22,7 @@ namespace Otthonbazar.Data
         public int HalfRoom { get; set; }
         [Display(Name = "Fénykép")]
         public string ImageUrl { get; set; }
-        [Display(Name = "Ár")]
+        [Display(Name = "Eladási ár")]
         [Required(ErrorMessage = "Az ár mező kitöltése kötelező.")]
         public decimal Price { get; set; }
         [Display(Name = "Szobák")]
