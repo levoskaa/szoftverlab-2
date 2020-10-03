@@ -10,7 +10,9 @@
           <a [routerLink]="['/']" class="nav-link">Hirdetések</a>
         </li>
         <li class="nav-item" [class.active]="createActive.isActive">
-          <a routerLink="create" class="nav-link">Hirdetés feladása</a>
+          <a routerLink="create" routerLinkActive #createActive="routerLinkActive" class="nav-link">
+            Hirdetés feladása
+          </a>
         </li>
       </ul>
     </div>

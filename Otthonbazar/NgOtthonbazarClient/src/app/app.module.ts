@@ -9,6 +9,7 @@ import { DetailsComponent } from './details/details.component';
 import { EditComponent } from './edit/edit.component';
 import { FilterComponent } from './filter/filter.component';
 import { Route, RouterModule } from '@angular/router';
+import { AdvertisementTypePipe } from './advertisement-type.pipe';
 
 const routes: Route[] = [
   { path: '', component: ListComponent },
@@ -23,7 +24,8 @@ const routes: Route[] = [
     ListComponent,
     DetailsComponent,
     EditComponent,
-    FilterComponent
+    FilterComponent,
+    AdvertisementTypePipe
   ],
   imports: [
     BrowserModule,
