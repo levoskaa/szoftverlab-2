@@ -10,6 +10,7 @@ import { EditComponent } from './edit/edit.component';
 import { FilterComponent } from './filter/filter.component';
 import { Route, RouterModule } from '@angular/router';
 import { AdvertisementTypePipe } from './advertisement-type.pipe';
+import { FormsModule } from '@angular/forms';
 
 const routes: Route[] = [
   { path: '', component: ListComponent },
@@ -31,7 +32,8 @@ const routes: Route[] = [
     BrowserModule,
     HttpClientModule,
     NgbModule,
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes),
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
