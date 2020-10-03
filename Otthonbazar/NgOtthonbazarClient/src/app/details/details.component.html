@@ -1,1 +1,62 @@
-<p>details works!</p>
+<ng-container *ngIf="advertisement != undefined">
+    <div class="container">
+        <div class="row">
+            <div class="col-7 px-0">
+                <h1>{{advertisement.city.name}}</h1>
+            </div>
+            <div class="col-5 px-0">
+                <div class="text-right">
+                    <h1>{{advertisement.price}} MFt</h1>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 px-0">
+                <span>{{advertisement.address}}</span>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-3 px-0">
+                <dl>
+                    <dt>Alapterület</dt>
+                    <dd>{{advertisement.size}} m<sup>2</sup></dd>
+                </dl>
+            </div>
+            <div class="col-3 px-0">
+                <dl>
+                    <dt>Szobák</dt>
+                    <dd>{{advertisement.room}} + {{advertisement.halfRoom}}</dd>
+                </dl>
+            </div>
+            <div class="col-3 px-0">
+                <dl>
+                    <dt>Típus</dt>
+                    <dd>{{advertisement.advertisementType | advertisementType}}</dd>
+                </dl>
+            </div>
+            <div class="col-3 px-0">
+                <dl>
+                    <dt>Építés éve</dt>
+                    <dd>{{advertisement.buildDate}}</dd>
+                </dl>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 px-0 d-flex justify-content-center">
+                <img src="{{advertisement.imageUrl}}" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 px-0">
+                <h3>Leírás</h3>
+                <p class="mb-0">{{advertisement.description}}</p>
+                <span>
+                    <a [routerLink]="['/', 'edit', advertisement.id]">Szerkesztés</a>
+                     | 
+                     <a [routerLink]="['/']">Vissza</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</ng-container>
