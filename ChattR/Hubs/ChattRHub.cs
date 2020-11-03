@@ -16,11 +16,13 @@ namespace ChattR.Hubs
         {
             Name = LobbyRoomName
         };
+        public static Dictionary<string, HubRoom> Rooms = new Dictionary<string, HubRoom>();
 
         public class HubRoom
         {
             public string Name { get; set; }
             public string CreatorId { get; set; }
+            public DateTimeOffset CreationDate { get; set; }
             public string Passkey { get; set; }
             public List<Message> Messages { get; } = new List<Message>();
             public List<User> Users { get; } = new List<User>();
@@ -50,16 +52,88 @@ namespace ChattR.Hubs
             await Groups.AddToGroupAsync(Context.ConnectionId, LobbyRoomName);
             await Clients.Caller.SetUsers(Lobby.Users);
             await Clients.Caller.SetMessages(Lobby.Messages);
+            var rooms = Rooms.Values.Select(h => new Room
+            {
+                Name = h.Name,
+                CreationDate = h.CreationDate,
+                RequiresPasskey = !string.IsNullOrEmpty(h.Passkey)
+            }).ToList();
+            await Clients.Caller.SetRooms(rooms);
         }
 
-        public override Task OnDisconnectedAsync(Exception exception)
+        public async Task EnterRoom(string roomName)
+        {
+            var user = new User { Id = Context.UserIdentifier, Username = Context.User.Identity.Name };
+            HubRoom hubRoom;
+            var success = Rooms.TryGetValue(roomName, out hubRoom);
+            if (!success)
+            {
+                throw new Exception($@"Could not enter room ""{roomName}"".");
+            }
+            hubRoom.Users.Add(user);
+            // Megvizsgálhatjuk a Client objekumot: ezen keresztül érjük el a hívó klienst (Caller),
+            // adott klienseket tudunk megszólítani pl. ConnectionId vagy UserIdentifier alapján, vagy
+            // használhatjuk a beépített csoport (Group) mechanizmust felhasználói csoportok kezelésére.
+            await Clients.Group(hubRoom.Name)
+                // A Client típusunk a fent megadott típusparaméter, ezeket a függvényeket tudjuk
+                // meghívni a kliense(ke)n.
+                .UserEntered(user);
+            await Groups.AddToGroupAsync(Context.ConnectionId, hubRoom.Name);
+            await Clients.Caller.SetUsers(hubRoom.Users);
+            await Clients.Caller.SetMessages(hubRoom.Messages);
+        }
+
+        public async Task<Room> CreateRoom(string roomName)
+        {
+            var hubRoom = new HubRoom
+            {
+                Name = roomName,
+                CreatorId = Context.UserIdentifier,
+                CreationDate = DateTimeOffset.Now
+            };
+            Rooms.Add(roomName, hubRoom);
+            var room = new Room
+            {
+                Name = hubRoom.Name,
+                CreationDate = hubRoom.CreationDate,
+                RequiresPasskey = false
+            };
+            await Clients.Group(LobbyRoomName).RoomCreated(room);
+            return room;
+        }
+
+        public override async Task OnDisconnectedAsync(Exception exception)
         {
             var user = Lobby.Users.FirstOrDefault(u => u.Id == Context.UserIdentifier);
             if (user != null)
+            {
                 Lobby.Users.Remove(user);
-            // TODO: később a saját szobakezelés kapcsán is kezelni kell a kilépő klienseket
-            Clients.Group(LobbyRoomName).UserLeft(Context.UserIdentifier);
-            return base.OnDisconnectedAsync(exception);
+                Clients.Group(LobbyRoomName).UserLeft(Context.UserIdentifier);
+                return;
+            }
+            var found = false;
+            var it = Rooms.GetEnumerator();
+            string roomName = null;
+            while (!found && it.MoveNext())
+            {
+                user = it.Current.Value.Users.FirstOrDefault(u => u.Id == Context.UserIdentifier);
+                if (user != null)
+                {
+                    it.Current.Value.Users.Remove(user);
+                    roomName = it.Current.Key;
+                    found = true;
+                }
+            }
+            if (roomName != null && Rooms.TryGetValue(roomName, out HubRoom hubRoom))
+            {
+                if (!hubRoom.Users.Any())
+                {
+                    Rooms.Remove(roomName);
+                    Clients.Group(LobbyRoomName).RoomAbandoned(roomName);
+                }
+                Clients.Group(hubRoom.Name).UserLeft(Context.UserIdentifier);
+            }
+            base.OnDisconnectedAsync(exception);
         }
 
         public async Task SendMessageToLobby(string message)
@@ -73,6 +147,45 @@ namespace ChattR.Hubs
             };
             Lobby.Messages.Add(messageInstance);
             await Clients.Group(LobbyRoomName).ReceiveMessage(messageInstance);
+        }
+
+        public async Task SendMessageToRoom(string roomName, string message)
+        {
+            HubRoom hubRoom;
+            var success = Rooms.TryGetValue(roomName, out hubRoom);
+            if (!success)
+            {
+                throw new Exception($@"Could not find room ""{roomName}"".");
+            }
+            var messageInstance = new Message
+            {
+                SenderId = Context.UserIdentifier,
+                SenderName = Context.User.Identity.Name,
+                Text = message,
+                PostedDate = DateTimeOffset.Now
+            };
+            hubRoom.Messages.Add(messageInstance);
+            await Clients.Group(hubRoom.Name).ReceiveMessage(messageInstance);
+        }
+
+        public async Task LeaveRoom(string roomName)
+        {
+            var success = Rooms.TryGetValue(roomName, out HubRoom hubRoom);
+            if (!success)
+            {
+                hubRoom = Lobby;
+            }
+            var user = hubRoom.Users.FirstOrDefault(u => u.Id == Context.UserIdentifier);
+            if (user != null)
+            {
+                hubRoom.Users.Remove(user);
+            }
+            Clients.Group(hubRoom.Name).UserLeft(Context.UserIdentifier);
+            if (!hubRoom.Users.Any())
+            {
+                Rooms.Remove(roomName);
+                Clients.Group(LobbyRoomName).RoomAbandoned(roomName);
+            }
         }
     }
 }

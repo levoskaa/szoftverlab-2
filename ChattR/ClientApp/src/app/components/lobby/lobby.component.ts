@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Room, User, Message } from '../../models';
 import { HubBuilderService } from 'src/app/services/hub-builder.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-lobby',
@@ -23,7 +24,7 @@ export class LobbyComponent implements OnInit, OnDestroy {
   chatMessage: string;
   connection: signalR.HubConnection;
 
-  constructor(hubBuilder: HubBuilderService) {
+  constructor(hubBuilder: HubBuilderService, private router: Router) {
     this.connection = hubBuilder.getConnection();
     // Beregisztráljuk a szervertől érkező üzenetek eseménykezelőjét. Típusosan is tudnánk kezelni egy
     // olyan objektum tulajdonságainak bejárásával, aminek tulajdonságai az eseménykezelők.
@@ -32,8 +33,12 @@ export class LobbyComponent implements OnInit, OnDestroy {
     this.connection.on("UserLeft", userId => this.userLeft(userId));
     this.connection.on("SetMessages", messages => this.setMessages(messages));
     this.connection.on("ReceiveMessage", message => this.receiveMessage(message));
+    this.connection.on("RoomCreated", room => this.roomCreated(room));
+    this.connection.on("RoomAbandoned", roomName => this.roomAbandoned(roomName));
+    this.connection.on("SetRooms", rooms => this.setRooms(rooms));
     // TODO: További eseménykezelőket is kell majd beregisztrálnunk itt.
     this.peeps = [];
+    this.rooms = [];
     this.lobbyMessages = [];
     this.connection.start().then(() => {
       this.connection.invoke("EnterLobby");
@@ -50,6 +55,9 @@ export class LobbyComponent implements OnInit, OnDestroy {
     this.connection.off("UserLeft");
     this.connection.off("SetMessages");
     this.connection.off("ReceiveMessage");
+    this.connection.off("RoomCreated");
+    this.connection.off("RoomAbandoned");
+    this.connection.off("SetRooms");
     // TODO: A később felregisztrált eseménykezelőket is itt iratkoztassuk le!
     this.connection.stop(); // A stop() függvény valójában aszinkron, egy Promise-szal tér vissza. A
     // kapcsolat lebontása időt vesz igénybe, de nem használjuk újra a connection objektumot, ezért
@@ -70,7 +78,7 @@ export class LobbyComponent implements OnInit, OnDestroy {
   userLeft(userId: string) {
     // A szerver azt jelezte, hogy a megadott ID-jú felhasználó elhagyta a szobát, így ki kell
     // vennünk a felhasználót a felhasználók tömbjéből ID alapján.
-    delete this.peeps[userId];
+    this.peeps = this.peeps.filter((user) => user.id !== userId);
   }
 
   setUsers(users: User[]) {
@@ -99,18 +107,28 @@ export class LobbyComponent implements OnInit, OnDestroy {
   }
 
   createRoom() {
-    // TODO: szoba létrehozása szerveren, majd navigáció a szoba útvonalára, szükség esetén megadni a passkey-t
+    // Szoba létrehozása szerveren, majd navigáció a szoba útvonalára, szükség esetén megadni a passkey-t
+    this.connection.invoke("CreateRoom", this.newRoomName).then((room: Room) => {
+      this.enterRoom(room);
+    });
   }
 
   roomCreated(room: Room) {
-    // TODO: szobalista frissítése
+    // Szobalista frissítése
+    this.rooms.push(room);
   }
 
   roomAbandoned(roomName: string) {
-    // TODO: szobalista frissítése
+    // Szobalista frissítése
+    this.rooms = this.rooms.filter((room) => room.name !== roomName);
   }
 
   enterRoom(room: Room) {
     // TODO: navigáció a szoba útvonlára, figyelve, hogy kell-e megadni passkey-t
+    this.router.navigate([`/room/${room.name}`]);
+  }
+
+  setRooms(rooms: Room[]) {
+    this.rooms = rooms;
   }
 }

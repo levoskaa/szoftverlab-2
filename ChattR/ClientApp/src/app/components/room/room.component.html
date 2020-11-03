@@ -1,3 +1,31 @@
-<p>
-  room works!
-</p>
+<div class="row">
+  <div class="col-md-8" style="height: calc(100vh - 72px); overflow-y: auto">
+    <form class="form-group row" (ngSubmit)="sendMessage()" #sendMessageForm="ngForm">
+      <input required class="form-control col-8" [(ngModel)]="chatMessage" name="chatMessage" autocomplete="off" />
+      <button [disabled]="!sendMessageForm.valid" class="btn btn-primary col-4" type="submit">Send</button>
+    </form>
+    <app-chat-stream [messages]="roomMessages"></app-chat-stream>
+  </div>
+  <div class="col-md-4">
+    <div class="row no-gutters">
+      <div class="col">
+        <a class="btn btn-primary w-100 rounded-0" [class.active]="activeTab === 'peeps'" (click)="activeTab='peeps'">Peeps ({{peeps === undefined ? '...' : peeps.length}})</a>
+      </div>
+      <div class="col">
+        <p class="btn btn-primary w-100 rounded-0">{{id}}</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div class="card">
+          <ul class="list-group list-group-flush">
+            <ng-container *ngIf="activeTab === 'peeps'">
+              <li *ngFor="let person of peeps" class="list-group-item">{{person.username}}</li>
+            </ng-container>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
