@@ -19,3 +19,11 @@
 ### 5. labor: SignalR (AUT 3)
 - Branch: signalr
 - Jegy:
+
+### 6. labor: XAML 1 (AUT 4)
+- Branch: xaml-1
+- Jegy:
+
+### 7. labor: XAML 2 (AUT 5)
+- Branch: xaml-2
+- Jegy:
