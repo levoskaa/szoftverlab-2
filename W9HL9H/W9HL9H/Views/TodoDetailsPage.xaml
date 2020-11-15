@@ -9,10 +9,23 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <CommandBar DefaultLabelPosition="Right" VerticalContentAlignment="Center">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <CommandBar Grid.Row="0" DefaultLabelPosition="Right" VerticalContentAlignment="Center">
             <CommandBar.Content>
                 <TextBlock Text="Részletek" Style="{ThemeResource TitleTextBlockStyle}" Margin="12,0,0,0"/>
             </CommandBar.Content>
         </CommandBar>
+
+        <StackPanel Grid.Row="1" Orientation="Vertical" Margin="12,0,12,0">
+            <TextBox Text="{Binding TodoItem.Title}" Header="Cím" FontWeight="SemiBold"/>
+            <TextBox Text="{Binding TodoItem.Description}" Header="Leírás" TextWrapping="Wrap" AcceptsReturn="True"/>
+            <ComboBox SelectedValue="{Binding TodoItem.Priority}" ItemsSource="{Binding Priorities}" Header="Prioritás"/>
+            <CheckBox IsChecked="{Binding TodoItem.IsDone}" Content="Kész"/>
+            <DatePicker Date="{Binding TodoItem.Deadline}" Header="Határidő"/>
+        </StackPanel>
     </Grid>
 </Page>
