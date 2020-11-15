@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using W9HL9H.Models;
 using W9HL9H.Views;
 using Windows.UI.Xaml;
@@ -14,7 +14,7 @@ namespace W9HL9H
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        public static List<TodoItem> Todos { get; set; } = new List<TodoItem>()
+        public static ObservableCollection<TodoItem> Todos { get; set; } = new ObservableCollection<TodoItem>()
         {
             new TodoItem()
             {
@@ -39,7 +39,7 @@ namespace W9HL9H
         public MainPage()
         {
             this.InitializeComponent();
-
+            NavigationCacheMode = Windows.UI.Xaml.Navigation.NavigationCacheMode.Required;
             DataContext = this;
         }
 
