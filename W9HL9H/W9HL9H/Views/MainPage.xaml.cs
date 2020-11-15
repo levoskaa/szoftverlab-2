@@ -14,7 +14,7 @@ namespace W9HL9H
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        public List<TodoItem> Todos { get; set; } = new List<TodoItem>()
+        public static List<TodoItem> Todos { get; set; } = new List<TodoItem>()
         {
             new TodoItem()
             {

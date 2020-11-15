@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using W9HL9H.Models;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -21,6 +22,13 @@ namespace W9HL9H.Views
             this.InitializeComponent();
 
             DataContext = this;
+        }
+
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            TodoItem.Id = MainPage.Todos.Max(t => t.Id) + 1;
+            MainPage.Todos.Add(TodoItem);
+            Frame.Navigate(typeof(MainPage), null);
         }
     }
 }
