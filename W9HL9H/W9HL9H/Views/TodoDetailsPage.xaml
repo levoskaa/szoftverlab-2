@@ -24,7 +24,7 @@
         <StackPanel Grid.Row="1" Orientation="Vertical" Margin="12,0,12,0">
             <TextBox Text="{Binding TodoItem.Title, Mode=TwoWay}" Header="Cím" FontWeight="SemiBold"/>
             <TextBox Text="{Binding TodoItem.Description, Mode=TwoWay}" Header="Leírás" TextWrapping="Wrap" AcceptsReturn="True"/>
-            <ComboBox SelectedValue="{Binding TodoItem.Priority, Mode=TwoWay}" ItemsSource="{Binding Priorities}" Header="Prioritás"/>
+            <ComboBox SelectedItem="{Binding TodoItem.Priority, Mode=TwoWay}" ItemsSource="{Binding Priorities}" Header="Prioritás"/>
             <CheckBox IsChecked="{Binding TodoItem.IsDone, Mode=TwoWay}" Content="Kész"/>
             <DatePicker Date="{Binding TodoItem.Deadline, Mode=TwoWay}" Header="Határidő"/>
         </StackPanel>

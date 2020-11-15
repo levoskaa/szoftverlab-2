@@ -47,5 +47,10 @@ namespace W9HL9H
         {
             Frame.Navigate(typeof(TodoDetailsPage), null);
         }
+
+        private void TodoListItem_Click(object sender, ItemClickEventArgs e)
+        {
+            Frame.Navigate(typeof(TodoDetailsPage), (TodoItem)e.ClickedItem);
+        }
     }
 }

@@ -26,7 +26,7 @@
             </CommandBar.Content>
         </CommandBar>
 
-        <ListView Grid.Row="1" ItemsSource="{Binding Todos}">
+        <ListView Grid.Row="1" ItemsSource="{Binding Todos}" IsItemClickEnabled="True" ItemClick="TodoListItem_Click">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>
