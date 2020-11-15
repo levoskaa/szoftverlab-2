@@ -14,15 +14,15 @@
 
 ### 4. labor: Szemantikus modellezés és információkeresés (MIT 2)
 - Branch: nincs
-- Jegy:
+- Jegy: 5
 
 ### 5. labor: SignalR (AUT 3)
 - Branch: signalr
-- Jegy:
+- Jegy: 4
 
 ### 6. labor: XAML 1 (AUT 4)
 - Branch: xaml-1
-- Jegy:
+- Jegy: 5
 
 ### 7. labor: XAML 2 (AUT 5)
 - Branch: xaml-2
