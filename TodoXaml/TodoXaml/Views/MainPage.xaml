@@ -23,7 +23,7 @@
         </Grid.RowDefinitions>
 
         <CommandBar Grid.Row="0" Style="{StaticResource HeaderCommandBarStyle}" Content="Teendők">
-            <AppBarButton Icon="Add" Label="Hozzáadás" Click="AddButton_Click"/>
+            <AppBarButton Icon="Add" Label="Hozzáadás" Command="{Binding NewTodoCommand}"/>
         </CommandBar>
 
         <ListView Grid.Row="1" ItemsSource="{Binding Todos, Mode=OneWay}" ItemClick="Todos_OnItemClick" IsItemClickEnabled="True">
