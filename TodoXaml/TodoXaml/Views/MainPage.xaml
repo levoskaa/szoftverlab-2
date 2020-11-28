@@ -26,16 +26,16 @@
             <AppBarButton Icon="Add" Label="Hozzáadás" Click="AddButton_Click"/>
         </CommandBar>
 
-        <ListView Grid.Row="1" ItemsSource="{Binding Todos}" ItemClick="Todos_OnItemClick" IsItemClickEnabled="True">
+        <ListView Grid.Row="1" ItemsSource="{Binding Todos, Mode=OneWay}" ItemClick="Todos_OnItemClick" IsItemClickEnabled="True">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel Background="{Binding Priority, Converter={StaticResource PriorityToBrushConverter}}">
+                    <StackPanel Background="{Binding Priority, Mode=OneWay, Converter={StaticResource PriorityToBrushConverter}}">
                         <Grid>
-                            <TextBlock Text="{Binding Title}" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding Title, Mode=OneWay}" FontWeight="SemiBold"/>
                             <SymbolIcon HorizontalAlignment="Right" Symbol="Accept" 
-                                        Visibility="{Binding IsDone, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                        Visibility="{Binding IsDone, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"/>
                         </Grid>
-                        <TextBlock Text="{Binding Deadline}"/>
+                        <TextBlock Text="{Binding Deadline, Mode=OneWay}"/>
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>

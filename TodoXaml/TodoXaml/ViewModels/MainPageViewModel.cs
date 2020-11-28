@@ -10,7 +10,18 @@ namespace TodoXaml.ViewModels
 {
     class MainPageViewModel : ViewModelBase
     {
-        public ObservableCollection<TodoItem> Todos { get; set; } = new ObservableCollection<TodoItem>();
+        private ObservableCollection<TodoItem> todos = new ObservableCollection<TodoItem>();
+        public ObservableCollection<TodoItem> Todos
+        {
+            get
+            {
+                return todos;
+            }
+            set
+            {
+                Set(ref todos, value);
+            }
+        }
 
         public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> state)
         {
