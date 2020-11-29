@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using TodoXaml.Models;
+﻿using TodoXaml.ViewModels;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -15,20 +11,10 @@ namespace TodoXaml.Views
     /// </summary>
     public sealed partial class TodoDetailsPage : Page
     {
-        public TodoItem Todo { get; set; }
-
-        public IEnumerable<Priority> PriorityValues => Enum.GetValues(typeof(Priority)).Cast<Priority>();
-
         public TodoDetailsPage()
         {
             this.InitializeComponent();
-        }
-
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            Todo = e.Parameter as TodoItem ?? new TodoItem() { Deadline = DateTimeOffset.Now };
-
-            DataContext = this;
+            DataContext = new TodoDetailsPageViewModel();
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)
@@ -36,6 +22,7 @@ namespace TodoXaml.Views
             // MainPage.Todos.Add(Todo);
 
             Frame.GoBack();
+            DataContext = new TodoDetailsPageViewModel();
         }
     }
 }

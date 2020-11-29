@@ -16,6 +16,11 @@ namespace TodoXaml.Services
             return await GetAsync<List<TodoItem>>(new Uri(_serverUrl, "api/Todo"));
         }
 
+        public async Task<TodoItem> GetTodo(int id)
+        {
+            return await GetAsync<TodoItem>(new Uri(_serverUrl, $"api/Todo/{id}"));
+        }
+
         private async Task<T> GetAsync<T>(Uri uri)
         {
             using (var client = new HttpClient())

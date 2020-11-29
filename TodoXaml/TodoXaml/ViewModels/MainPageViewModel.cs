@@ -9,7 +9,7 @@ using Windows.UI.Xaml.Navigation;
 
 namespace TodoXaml.ViewModels
 {
-    class MainPageViewModel : ViewModelBase
+    public class MainPageViewModel : ViewModelBase
     {
         private ObservableCollection<TodoItem> todos = new ObservableCollection<TodoItem>();
         public ObservableCollection<TodoItem> Todos
@@ -23,8 +23,8 @@ namespace TodoXaml.ViewModels
                 Set(ref todos, value);
             }
         }
-        private DelegateCommand newTodoCommand;
-        public DelegateCommand NewTodoCommand => newTodoCommand ?? (newTodoCommand = new DelegateCommand(NavigateToTodoDetailsPage));
+        private DelegateCommand<object> newTodoCommand;
+        public DelegateCommand<object> NewTodoCommand => newTodoCommand ?? (newTodoCommand = new DelegateCommand<object>(NavigateToTodoDetailsPage));
 
         public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> state)
         {
@@ -33,9 +33,14 @@ namespace TodoXaml.ViewModels
             await base.OnNavigatedToAsync(parameter, mode, state);
         }
 
-        private void NavigateToTodoDetailsPage()
+        public void OpenTodoDetails(int todoId)
         {
-            NavigationService.Navigate(typeof(TodoDetailsPage));
+            NavigateToTodoDetailsPage(todoId);
+        }
+
+        private void NavigateToTodoDetailsPage(object todoId = null)
+        {
+            NavigationService.Navigate(typeof(TodoDetailsPage), todoId);
         }
     }
 }
