@@ -26,4 +26,4 @@
 
 ### 7. labor: XAML 2 (AUT 5)
 - Branch: xaml-2
-- Jegy:
+- Jegy: 5
