@@ -1,5 +1,4 @@
 ﻿using TodoXaml.ViewModels;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -14,14 +13,6 @@ namespace TodoXaml.Views
         public TodoDetailsPage()
         {
             this.InitializeComponent();
-            DataContext = new TodoDetailsPageViewModel();
-        }
-
-        private void Save_Click(object sender, RoutedEventArgs e)
-        {
-            // MainPage.Todos.Add(Todo);
-
-            Frame.GoBack();
             DataContext = new TodoDetailsPageViewModel();
         }
     }

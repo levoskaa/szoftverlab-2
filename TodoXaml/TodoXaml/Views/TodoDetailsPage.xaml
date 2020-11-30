@@ -15,7 +15,7 @@
             </Grid.RowDefinitions>
 
             <CommandBar Grid.Row="0" Style="{StaticResource HeaderCommandBarStyle}" Content="Részletek">
-                <AppBarButton Icon="Save" Label="Mentés" Click="Save_Click"/>
+                <AppBarButton Icon="Save" Label="Mentés" Command="{Binding SaveCommand}"/>
             </CommandBar>
 
             <StackPanel Grid.Row="1" Margin="12,0" MaxWidth="320" HorizontalAlignment="Left">
