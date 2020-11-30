@@ -1,4 +1,4 @@
-﻿using TodoXaml.Models;
+﻿using TodoXaml.TodoServiceApi.Models;
 using TodoXaml.ViewModels;
 using Windows.UI.Xaml.Controls;
 

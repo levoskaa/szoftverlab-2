@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Template10.Mvvm;
-using TodoXaml.Models;
 using TodoXaml.Services;
+using TodoXaml.TodoServiceApi.Models;
 using Windows.UI.Xaml.Navigation;
+using Priority = TodoXaml.Models.Priority;
 
 namespace TodoXaml.ViewModels
 {
@@ -27,7 +28,14 @@ namespace TodoXaml.ViewModels
 
         public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> state)
         {
-            Todo = parameter != null ? await new TodoService().GetTodo((int)parameter) : new TodoItem();
+            if (parameter != null)
+            {
+                Todo = (await new TodoService().GetTodoWithHttpMessagesAsync((int)parameter)).Body;
+            }
+            else
+            {
+                Todo = new TodoItem();
+            }
             await base.OnNavigatedToAsync(parameter, mode, state);
         }
     }
